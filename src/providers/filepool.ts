@@ -462,8 +462,14 @@ export class CoreFilepoolProvider {
                 component: component,
                 componentId: componentId || ''
             };
+            const promise = new Promise<void>((resolve, reject): void => {
+                db.insertRecord(this.LINKS_TABLE, newEntry).then(() => {
+                    this.notifyFileDownloadedToComponent(siteId, component, componentId);
+                    resolve();
+                });
+            });
 
-            return db.insertRecord(this.LINKS_TABLE, newEntry);
+            return promise;
         });
     }
 
@@ -1391,6 +1397,17 @@ export class CoreFilepoolProvider {
                 return file;
             });
         });
+    }
+
+    /**
+     * Get the name of the event used to notify file downloaded to component (CoreEventsProvider).
+     *
+     * @param siteId The site ID.
+     * @param fileId The file ID.
+     * @return Event name.
+     */
+    protected getComponentEventName(siteId: string, component: string, componentId: string | number): string {
+        return 'ComponentFileDownloaded:' + siteId + ':' + component + ':' + componentId;
     }
 
     /**
@@ -2457,6 +2474,17 @@ export class CoreFilepoolProvider {
      */
     protected notifyFileDownloaded(siteId: string, fileId: string): void {
         this.eventsProvider.trigger(this.getFileEventName(siteId, fileId), { action: 'download', success: true });
+    }
+
+    /**
+     * Notify a file has been downloaded to Component to update Context Menu.
+     *
+     * @param siteId The site ID.
+     * @param component The component name.
+     * @param componentId The component ID.
+     */
+    protected notifyFileDownloadedToComponent(siteId: string, component: string, componentId: string | number): void {
+        this.eventsProvider.trigger(this.getComponentEventName(siteId, component, componentId), {}, siteId);
     }
 
     /**

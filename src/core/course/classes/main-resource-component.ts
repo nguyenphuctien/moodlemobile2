@@ -49,6 +49,7 @@ export class CoreCourseModuleMainResourceComponent implements OnInit, OnDestroy,
 
     protected isDestroyed; // Whether the component is destroyed, used when calling fillContextMenu.
     protected contextMenuStatusObserver; // Observer of package status changed, used when calling fillContextMenu.
+    protected contextFileDownloadedObserver; // Observer of file downloaded event, used when calling fillContextMenu.
     protected fetchContentDefaultError = 'core.course.errorgetmodule'; // Default error to show when loading contents.
     protected isCurrentView: boolean; // Whether the component is in the current view.
 
@@ -285,6 +286,7 @@ export class CoreCourseModuleMainResourceComponent implements OnInit, OnDestroy,
     ngOnDestroy(): void {
         this.isDestroyed = true;
         this.contextMenuStatusObserver && this.contextMenuStatusObserver.off();
+        this.contextFileDownloadedObserver && this.contextFileDownloadedObserver.off();
     }
 
     /**

@@ -827,6 +827,16 @@ export class CoreCourseHelperProvider {
                     }
                 }, this.sitesProvider.getCurrentSiteId());
             }
+
+            if (typeof instance.contextFileDownloadedObserver == 'undefined' && component) {
+                const componentFileDownloadedEvent = 'ComponentFileDownloaded:' + this.sitesProvider.getCurrentSiteId() + ':' +
+                    component + ':' + module.id;
+                instance.contextFileDownloadedObserver = this.eventsProvider.on(componentFileDownloadedEvent, (data) => {
+                    if (moduleInfo.status != CoreConstants.DOWNLOADING) {
+                        this.fillContextMenu(instance, module, courseId, true, component);
+                    }
+                }, this.sitesProvider.getCurrentSiteId());
+            }
         });
     }
 
