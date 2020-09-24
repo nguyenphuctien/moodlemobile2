@@ -318,7 +318,7 @@ export class CoreCourseSectionPage implements OnDestroy {
                 if (tabToLoad) {
                     setTimeout(() => {
                         this.tabsComponent.selectTab(tabToLoad);
-                    });
+                    }, 500);
                 }
             }));
 
