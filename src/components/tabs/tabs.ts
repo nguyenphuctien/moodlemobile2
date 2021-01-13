@@ -587,7 +587,8 @@ export class CoreTabsComponent implements OnInit, AfterViewInit, OnChanges, OnDe
             currentTab.unselectTab();
         }
 
-        if (this.selected) {
+        // Change slide unless the selected value is undefined or null.
+        if (this.selected != undefined) {
             this.slides.slideTo(index);
             this.updateAriaHidden(); // Slide's slideTo() sets aria-hidden to true, update it.
         }
